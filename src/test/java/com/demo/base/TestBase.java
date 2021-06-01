@@ -99,13 +99,17 @@ public class TestBase {
 			logger.get().log(Status.FAIL, "Test Case failed is "+result.getName());
 			logger.get().fail(result.getThrowable());
 			
-			/*
-			 * if(StringUtil.isNotBlank(prop.getProperty("retryFailedTests"))) {
-			 * if(!retryClasses.containsKey(result.getTestClass().getName())) {
-			 * retryClasses.put(result.getTestClass().getName(), result.getName()); }else {
-			 * retryClasses.put(result.getTestClass().getName(),
-			 * retryClasses.get(result.getTestClass().getName())+";"+result.getName()); } }
-			 */
+			
+			if(StringUtil.isNotBlank(prop.getProperty("retryFailedTests"))) {
+				if(!retryClasses.containsKey(result.getTestClass().getName())) {
+					retryClasses.put(result.getTestClass().getName(), result.getName()); 
+				}
+				else {
+					retryClasses.put(result.getTestClass().getName(),
+					retryClasses.get(result.getTestClass().getName())+";"+result.getName()); 
+				} 
+			}
+			 
 			
 			logger.get().fail("Test Case Failed");
 		}
