@@ -69,18 +69,14 @@ public class TestBase {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-				
+		
 		if(blnRetry == false)
 			reporter = ExtentFactory.generateReport();
 	}
 	
-	/*
-	 * @BeforeTest public void setupTest() throws IOException { driver =
-	 * WebDriverFactory.createDriverInstance(); }
-	 */
-	
 	@BeforeMethod(alwaysRun= true)
 	public void startReport(ITestContext context, Method method) throws IOException {
+		
 		driver = WebDriverFactory.createDriverInstance();
 		testClassName = getClass().getSimpleName();
 		methodName = method.getName();
@@ -99,7 +95,6 @@ public class TestBase {
 			logger.get().log(Status.FAIL, "Test Case failed is "+result.getName());
 			logger.get().fail(result.getThrowable());
 			
-			
 			if(StringUtil.isNotBlank(prop.getProperty("retryFailedTests"))) {
 				if(!retryClasses.containsKey(result.getTestClass().getName())) {
 					retryClasses.put(result.getTestClass().getName(), result.getName()); 
@@ -110,7 +105,6 @@ public class TestBase {
 				} 
 			}
 			 
-			
 			logger.get().fail("Test Case Failed");
 		}
 		
@@ -125,14 +119,13 @@ public class TestBase {
 		}
 		
 		driver.close();
-		System.out.println("******** Closing the Test : '"+result.getName()+"'");
+		System.out.println("******** Ending the Test : '"+result.getName()+"'");
 		reporter.flush();
 	}
 	
 	@AfterSuite
 	public void teardown() {
 		//Add Code to create Retry XML Here and execute
-		//driver.close();
 		
 	}
 	
