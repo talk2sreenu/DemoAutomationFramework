@@ -36,9 +36,7 @@ public class SimplePage extends BasePage{
 		try {
 			if(btnSubmit.isEnabled()) {
 				System.out.println("Object is displayed as expected");
-				txtSearch.sendKeys("StudentFunda");
-				txtSearch.sendKeys(Keys.TAB);
-				
+				txtSearch.sendKeys("StudentFunda");				
 				btnSubmit.click();
 				localSleep(2000);
 				driver.navigate().back();

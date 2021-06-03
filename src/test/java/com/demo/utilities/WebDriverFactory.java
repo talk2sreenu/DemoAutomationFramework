@@ -20,6 +20,7 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.ITestContext;
 
 import com.demo.base.TestBase;
 
@@ -34,12 +35,13 @@ public class WebDriverFactory extends TestBase {
 	public static String platform;
 	public static String mobilePlatForm;
 
-	public static WebDriver createDriverInstance() throws IOException {
+	public static WebDriver createDriverInstance(ITestContext... context) throws IOException {
+		if(context.length > 0)
+			PropertiesLoader.loadContextProperties(context[0]);
+		browserName = System.getProperty("selenium.browser");
+		platform = System.getProperty("selenium.host");
+		mobilePlatForm = System.getProperty("selenium.mobile.platform");
 
-		browserName = prop.getProperty("selenium.browser");
-		platform = prop.getProperty("selenium.host");
-		mobilePlatForm = prop.getProperty("selenium.mobile.platform");
-		
 		switch(platform.toUpperCase()) {
 			case "LOCAL":
 				driver = createBrowserSpecificLocalDriver(browserName);
@@ -194,7 +196,8 @@ public class WebDriverFactory extends TestBase {
                 "--ignore-certificate-errors",
                 "--privet-ipv6-only",
                 "--no-sandbox",
-                "--disable-gpu");
+                "--disable-gpu",
+                "--disable-dev-shm-usage");
 		
 		dc.setCapability(ChromeOptions.CAPABILITY, co);
 		dc.setCapability("platform", "LINUX");
