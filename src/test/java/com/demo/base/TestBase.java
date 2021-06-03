@@ -108,17 +108,14 @@ public class TestBase {
 			 
 			logger.get().fail("Test Case Failed");
 		}
-		
 		else if(result.getStatus() == ITestResult.SKIP) {
 			logger.get().log(Status.SKIP, "Test Case Skipped is : '"+result.getName()+"'");
 			logger.get().skip(result.getThrowable());
 			logger.get().skip("Test Case Skipped");
 		}
-		
 		else {
 			logger.get().pass("Test Case Passed");
-		}
-		
+		}	
 		driver.close();
 		System.out.println("******** Ending the Test : '"+result.getName()+"'");
 		reporter.flush();
@@ -127,7 +124,6 @@ public class TestBase {
 	@AfterSuite
 	public void teardown() {
 		//Add Code to create Retry XML Here and execute
-		
 	}
 	
 	@DataProvider(name="testData")
@@ -138,7 +134,6 @@ public class TestBase {
 		FileInputStream fis = new FileInputStream(fileLocation);
 		
 		workbook = new XSSFWorkbook(fis);
-
 		workSheet = workbook.getSheet(m.getName());
 		
 		int rowCnt = workSheet.getLastRowNum();
@@ -156,5 +151,4 @@ public class TestBase {
 		}
 		return dataObject;
 	}
-
 }
