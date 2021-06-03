@@ -64,7 +64,8 @@ public class TestBase {
 		PropertyConfigurator.configure(System.getProperty("user.dir")+"\\src\\test\\resources\\properties\\log4j.properties");
 		
 		try {
-			prop = PropertiesLoader.loadProperties();
+			//prop = PropertiesLoader.loadProperties();
+			PropertiesLoader.loadProperties();
 			log.info("Config File Loaded !!!");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,7 +78,7 @@ public class TestBase {
 	@BeforeMethod(alwaysRun= true)
 	public void startReport(ITestContext context, Method method) throws IOException {
 		
-		driver = WebDriverFactory.createDriverInstance();
+		driver = WebDriverFactory.createDriverInstance(context);
 		testClassName = getClass().getSimpleName();
 		methodName = method.getName();
 		parentTest.set(reporter.createTest(testClassName+"_"+methodName));
@@ -153,7 +154,6 @@ public class TestBase {
 			}
 			dataObject[i-1][0] = dataMap;
 		}
-		
 		return dataObject;
 	}
 
