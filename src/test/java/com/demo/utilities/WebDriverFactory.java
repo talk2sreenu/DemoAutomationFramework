@@ -116,7 +116,6 @@ public class WebDriverFactory extends TestBase {
 				
 				driver = new IOSDriver(url, cap);
 				break;
-			
 		}
 		return driver;
 	}
@@ -218,10 +217,8 @@ public class WebDriverFactory extends TestBase {
 		options.addArguments("disable-infobars");
 		options.addArguments("--no-sandbox");
 		options.addArguments("--dns-prefetch-disable");
-		
 		options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 		options.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-		
 		return options;
 	}
 }
