@@ -36,4 +36,6 @@ public class ExtentFactory extends TestBase{
 	    Date date = new Date(System.currentTimeMillis());
 	   return formatter.format(date);
 	}
+	
+	
 }
