@@ -30,7 +30,7 @@ import io.appium.java_client.ios.IOSDriver;
 
 public class WebDriverFactory extends TestBase {
 
-	public static WebDriver driver;
+	public static WebDriver driver_Local;
 	public static String browserName;
 	public static String platform;
 	public static String mobilePlatForm;
@@ -44,18 +44,18 @@ public class WebDriverFactory extends TestBase {
 
 		switch(platform.toUpperCase()) {
 			case "LOCAL":
-				driver = createBrowserSpecificLocalDriver(browserName);
+				driver_Local = createBrowserSpecificLocalDriver(browserName);
 				break;
 				
 			case "MOBILE":
-				driver = createDeviceSpecificDriver(mobilePlatForm);
+				driver_Local = createDeviceSpecificDriver(mobilePlatForm);
 				break;
 				
 			case "REMOTE":
-				driver = createBrowserSpecificRemoteDriver(browserName);
+				driver_Local = createBrowserSpecificRemoteDriver(browserName);
 				break;
 		}
-		return driver;
+		return driver_Local;
 	}
 	
 	private static WebDriver createDeviceSpecificDriver(String mobilePlatForm2) {
@@ -78,7 +78,7 @@ public class WebDriverFactory extends TestBase {
 				cap.setCapability("appPackage", "com.adobe.reader");
 				cap.setCapability("appActivity", "com.adobe.reader.AdobeReader");		
 				
-				driver = new AndroidDriver(url, cap);
+				driver_Local = new AndroidDriver(url, cap);
 				break;
 			
 			case "IOS":
@@ -90,7 +90,7 @@ public class WebDriverFactory extends TestBase {
 				cap.setCapability("appPackage", "com.adobe.reader");
 				cap.setCapability("appActivity", "com.adobe.reader.AdobeReader");		
 				
-				driver = new IOSDriver(url, cap);
+				driver_Local = new IOSDriver(url, cap);
 				break;
 			
 			case "WEB_ANDROID":
@@ -102,7 +102,7 @@ public class WebDriverFactory extends TestBase {
 				cap.setCapability("appPackage", "com.adobe.reader");
 				cap.setCapability("appActivity", "com.adobe.reader.AdobeReader");		
 				
-				driver = new AndroidDriver(url, cap);
+				driver_Local = new AndroidDriver(url, cap);
 				break;
 			
 			case "WEB_IOS":
@@ -114,36 +114,36 @@ public class WebDriverFactory extends TestBase {
 				cap.setCapability("appPackage", "com.adobe.reader");
 				cap.setCapability("appActivity", "com.adobe.reader.AdobeReader");		
 				
-				driver = new IOSDriver(url, cap);
+				driver_Local = new IOSDriver(url, cap);
 				break;
 		}
-		return driver;
+		return driver_Local;
 	}
 
 	public static WebDriver createBrowserSpecificLocalDriver(String browserName) throws IOException {
 		
 		switch (browserName.toUpperCase()) {
 			case "CHROME":
-				driver = new ChromeDriver(setUpChromeOptions());
+				driver_Local = new ChromeDriver(setUpChromeOptions());
 				break;
 			case "FIREFOX":
-				driver = new FirefoxDriver(setupFirefoxOptions());
+				driver_Local = new FirefoxDriver(setupFirefoxOptions());
 				break;
 			case "INTERNET_EXPLORER":
-				driver = new InternetExplorerDriver(setupInternetOptions());
+				driver_Local = new InternetExplorerDriver(setupInternetOptions());
 				break;
 			case "CHROME_DOCKER":
 				//This will be added to the Chrome Case in Future
 				ChromeOptions option = new ChromeOptions();
 				option.addArguments("--headless", "--disable-gpu", "--window-size=1920,1080", "--igone-certificate-errors", "--disable-ipv6");
-				driver = new ChromeDriver(option);
+				driver_Local = new ChromeDriver(option);
 				break;		
 		}
 		
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		return driver;
+		driver_Local.manage().window().maximize();
+		driver_Local.manage().deleteAllCookies();
+		driver_Local.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		return driver_Local;
 	}
 	
 	private static InternetExplorerOptions setupInternetOptions() {
@@ -161,22 +161,22 @@ public class WebDriverFactory extends TestBase {
 	}
 
 	private static WebDriver createBrowserSpecificRemoteDriver(String browserName2) throws MalformedURLException {
-		String hostURL = prop.getProperty("selenium.remote.hub.url"); 
+		String hostURL = System.getProperty("selenium.remote.hub.url"); 
 		URL url = new URL(hostURL);
 
 		switch (browserName.toUpperCase()) {
 			case "CHROME":
-				driver = new RemoteWebDriver(url, getChromeDesiredCapabilities());
+				driver_Local = new RemoteWebDriver(url, getChromeDesiredCapabilities());
 				break;
 			case "FIREFOX":
-				driver = new RemoteWebDriver(url, getFirefoxDesiredCapabilities());
+				driver_Local = new RemoteWebDriver(url, getFirefoxDesiredCapabilities());
 				break;
 		}
 
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		return driver;
+		driver_Local.manage().window().maximize();
+		driver_Local.manage().deleteAllCookies();
+		driver_Local.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		return driver_Local;
 	}
 
 	private static Capabilities getFirefoxDesiredCapabilities() {
@@ -190,7 +190,7 @@ public class WebDriverFactory extends TestBase {
 		DesiredCapabilities dc = DesiredCapabilities.chrome();
 		ChromeOptions co = new ChromeOptions();
 		co.addArguments(
-                //"--headless",
+                "--headless",
                 "--disable-web-security",
                 "--ignore-certificate-errors",
                 "--privet-ipv6-only",
