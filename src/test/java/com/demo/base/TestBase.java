@@ -31,6 +31,7 @@ import com.demo.utilities.WebDriverFactory;
 
 public class TestBase {
 	
+	public static ThreadLocal<WebDriver> Localdriver = new ThreadLocal<WebDriver>();
 	public static WebDriver driver;
 	public static Properties prop;
 	public static ExtentReports reporter;
@@ -52,7 +53,6 @@ public class TestBase {
 	
 	@BeforeSuite(alwaysRun = true)
 	public void setup() {
-		
 		if(System.getProperty("os.name").toLowerCase().contains("win")) {
 			try {
 				Runtime.getRuntime().exec("taskkill /IM IEDriverServer.exe /IM chromedriver.exe /IM geckodriver.exe /IM MicrosoftWebDriver.exe /f");
@@ -63,7 +63,6 @@ public class TestBase {
 		PropertyConfigurator.configure(System.getProperty("user.dir")+"\\src\\test\\resources\\properties\\log4j.properties");
 		
 		try {
-			//prop = PropertiesLoader.loadProperties();
 			PropertiesLoader.loadProperties();
 			log.info("Config File Loaded !!!");
 		} catch (IOException e) {
@@ -74,10 +73,16 @@ public class TestBase {
 			reporter = ExtentFactory.generateReport();
 	}
 	
+	public WebDriver getDriver(ITestContext context) throws IOException {
+		Localdriver.set(WebDriverFactory.createDriverInstance(context));
+		return Localdriver.get();
+	}
 	@BeforeMethod(alwaysRun= true)
 	public void startReport(ITestContext context, Method method) throws IOException {
 		
-		driver = WebDriverFactory.createDriverInstance(context);
+		driver = getDriver(context);
+		//driver.set(WebDriverFactory.createDriverInstance(context));
+		//driver = Localdriver.set(WebDriverFactory.createDriverInstance(context));
 		testClassName = getClass().getSimpleName();
 		methodName = method.getName();
 		parentTest.set(reporter.createTest(testClassName+"_"+methodName));
@@ -95,7 +100,7 @@ public class TestBase {
 			logger.get().log(Status.FAIL, "Test Case failed is "+result.getName());
 			logger.get().fail(result.getThrowable());
 			
-			if(StringUtil.isNotBlank(prop.getProperty("retryFailedTests"))) {
+			if(System.getProperty("retryFailedTests")!=null) {
 				if(!retryClasses.containsKey(result.getTestClass().getName())) {
 					retryClasses.put(result.getTestClass().getName(), result.getName()); 
 				}
@@ -114,8 +119,11 @@ public class TestBase {
 		}
 		else {
 			logger.get().pass("Test Case Passed");
-		}	
-		driver.close();
+		}
+		
+		if(Localdriver.get()!=null)
+			Localdriver.get().quit();
+		
 		System.out.println("******** Ending the Test : '"+result.getName()+"'");
 		reporter.flush();
 	}
@@ -123,6 +131,7 @@ public class TestBase {
 	@AfterSuite
 	public void teardown() {
 		//Add Code to create Retry XML Here and execute
+		
 	}
 	
 	@DataProvider(name="testData")

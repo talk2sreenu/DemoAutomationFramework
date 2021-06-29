@@ -28,6 +28,8 @@ public class PropertiesLoader extends TestBase{
 				System.setProperty(key, prop.getProperty(key));
 			if(key.toLowerCase().contains(".mobile.platform"))
 				System.setProperty(key, prop.getProperty(key));
+			if(key.toLowerCase().contains(".remote.hub.url"))
+				System.setProperty(key, prop.getProperty(key));
 		}
 	}
 	

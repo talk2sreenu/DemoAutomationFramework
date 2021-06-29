@@ -13,7 +13,7 @@ public class ExtentFactory extends TestBase{
 	
 	public static ThreadLocal<ExtentReports> extent = new ThreadLocal<>();
 	private static ExtentHtmlReporter htmlReporter;
-	public static String fileName = "test-results//AutomationReport"+dateTimeGenerate()+".html";
+	public static String fileName = "test-results//AutomationReport"+CommonUtils.dateTimeGenerate()+".html";
 	
 	public static ExtentReports generateReport() {
 		
@@ -29,13 +29,5 @@ public class ExtentFactory extends TestBase{
 		extent.get().setSystemInfo("User Name", "Srini");
 		
 		return extent.get();
-	}
-	
-	public static String dateTimeGenerate(){
-	    Format formatter = new SimpleDateFormat("YYYYMMdd_HHmmssSSS");
-	    Date date = new Date(System.currentTimeMillis());
-	   return formatter.format(date);
-	}
-	
-	
+	}	
 }

@@ -36,15 +36,17 @@ public class SimplePage extends BasePage{
 			if(btnSubmit.isEnabled()) {
 				System.out.println("Object is displayed as expected");
 				txtSearch.sendKeys("StudentFunda");				
-				btnSubmit.click();
+				performClick(btnSubmit, "Submit");
 				localSleep(2000);
 				driver.navigate().back();
-				lnkStore.click();
+				performClick(lnkStore, "Store Link");
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
+		generateLog("info", "Another Test", true);
+		generateLog("info", "Generic False Test", false);
 	}
 	
 }
