@@ -163,7 +163,7 @@
 					<version>3.0.0-M3</version>
 					<configuration>
 						<suiteXmlFiles>
-							<suiteXmlFile>${suitefile}.xml</suiteXmlFile>
+							<suiteXmlFile>src/test/resources/runners/${suitefile}</suiteXmlFile>
 						</suiteXmlFiles>
 					</configuration>
 				</plugin>
