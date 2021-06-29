@@ -1,6 +1,8 @@
 package com.demo.testcases;
+import java.awt.event.KeyEvent;
 import java.util.Map;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,7 +14,7 @@ public class SimplePage extends BasePage{
 	public SimplePage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	@FindBy(xpath="(//*[@name='btnK'])[2]")
 	public WebElement btnSubmit;
 	
@@ -35,7 +37,8 @@ public class SimplePage extends BasePage{
 		try {
 			if(btnSubmit.isEnabled()) {
 				System.out.println("Object is displayed as expected");
-				txtSearch.sendKeys("StudentFunda");				
+				txtSearch.sendKeys("StudentFunda");
+				txtSearch.sendKeys(Keys.TAB);
 				performClick(btnSubmit, "Submit");
 				localSleep(2000);
 				driver.navigate().back();
