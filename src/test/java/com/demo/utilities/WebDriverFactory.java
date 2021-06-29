@@ -34,8 +34,9 @@ public class WebDriverFactory extends TestBase {
 	public static String browserName;
 	public static String platform;
 	public static String mobilePlatForm;
+	private static ThreadLocal<WebDriver> webdriver = new ThreadLocal<WebDriver>();
 
-	public static WebDriver createDriverInstance(ITestContext... context) throws IOException {
+	public static void createDriverInstance(ITestContext... context) throws IOException {
 		if(context.length > 0)
 			PropertiesLoader.loadContextProperties(context[0]);
 		browserName = System.getProperty("selenium.browser");
@@ -55,7 +56,12 @@ public class WebDriverFactory extends TestBase {
 				driver_Local = createBrowserSpecificRemoteDriver(browserName);
 				break;
 		}
-		return driver_Local;
+		
+		webdriver.set(driver_Local);
+	}
+	
+	public static WebDriver getDriver() {
+		return webdriver.get();
 	}
 	
 	private static WebDriver createDeviceSpecificDriver(String mobilePlatForm2) {

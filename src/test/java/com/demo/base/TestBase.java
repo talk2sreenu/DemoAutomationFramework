@@ -31,8 +31,8 @@ import com.demo.utilities.WebDriverFactory;
 
 public class TestBase {
 	
-	public static ThreadLocal<WebDriver> Localdriver = new ThreadLocal<WebDriver>();
-	public static WebDriver driver;
+	//public static ThreadLocal<WebDriver> Localdriver = new ThreadLocal<WebDriver>();
+	protected WebDriver driver;
 	public static Properties prop;
 	public static ExtentReports reporter;
 	public static String methodName;
@@ -49,13 +49,14 @@ public class TestBase {
 	public static ThreadLocal<ExtentTest> logger = new ThreadLocal<>();
 	
 	private static HashMap<String, String> retryClasses = new HashMap<String,String>();
-	
+
 	
 	@BeforeSuite(alwaysRun = true)
 	public void setup() {
 		if(System.getProperty("os.name").toLowerCase().contains("win")) {
 			try {
 				Runtime.getRuntime().exec("taskkill /IM IEDriverServer.exe /IM chromedriver.exe /IM geckodriver.exe /IM MicrosoftWebDriver.exe /f");
+				System.out.println("Everything closed");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -73,16 +74,13 @@ public class TestBase {
 			reporter = ExtentFactory.generateReport();
 	}
 	
-	public WebDriver getDriver(ITestContext context) throws IOException {
-		Localdriver.set(WebDriverFactory.createDriverInstance(context));
-		return Localdriver.get();
-	}
+
 	@BeforeMethod(alwaysRun= true)
 	public void startReport(ITestContext context, Method method) throws IOException {
+		WebDriverFactory.createDriverInstance(context);
 		
-		driver = getDriver(context);
-		//driver.set(WebDriverFactory.createDriverInstance(context));
-		//driver = Localdriver.set(WebDriverFactory.createDriverInstance(context));
+		driver = WebDriverFactory.getDriver();
+
 		testClassName = getClass().getSimpleName();
 		methodName = method.getName();
 		parentTest.set(reporter.createTest(testClassName+"_"+methodName));
@@ -120,9 +118,8 @@ public class TestBase {
 		else {
 			logger.get().pass("Test Case Passed");
 		}
-		
-		if(Localdriver.get()!=null)
-			Localdriver.get().quit();
+		if(WebDriverFactory.getDriver()!=null)
+			WebDriverFactory.getDriver().quit();
 		
 		System.out.println("******** Ending the Test : '"+result.getName()+"'");
 		reporter.flush();

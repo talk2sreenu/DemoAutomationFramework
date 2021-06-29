@@ -6,6 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
+import com.demo.utilities.WebDriverFactory;
 
 public class BasePage extends TestBase{
 	//Common class to add object level actions & create methods
