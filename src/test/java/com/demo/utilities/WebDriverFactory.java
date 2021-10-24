@@ -81,7 +81,7 @@ public class WebDriverFactory extends TestBase {
 				cap.setCapability("platformVersion", "6.0");
 				cap.setCapability("platformName", "Android");
 				cap.setCapability("automationName", "UIAutomator2");
-				cap.setCapability("appPackage", "com.adobe.reader");
+				cap.setCapability("appPackage", "com.adobe.reader"); 
 				cap.setCapability("appActivity", "com.adobe.reader.AdobeReader");		
 				
 				driver_Local = new AndroidDriver(url, cap);

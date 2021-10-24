@@ -10,6 +10,10 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.testng.TestNGException;
+import org.testng.annotations.Test;
+
+import com.sun.tools.sjavac.Log;
 
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
@@ -96,4 +100,23 @@ public class RestAssuredGet {
 		//ra.generateGetWithJSON();
 		ra.testAnotherURI();
 	}
+	
+	@Test(expectedExceptions = ArithmeticException.class, expectedExceptionsMessageRegExp ="/ by zero")
+	public void sampleTest() {
+		System.out.println(1/0);
+	}
+	
+	@Test
+	public void secondTest() {
+		System.out.println("Inside Dependent Method");
+	}
+	
+	public void helloWorld() {
+		System.out.println("Hello WOrld");
+	}
+	@Test(dependsOnMethods={"secondTest"})
+	public void aTest() {
+		System.out.println("Hello Dependent Methos");
+	}
+	
 }

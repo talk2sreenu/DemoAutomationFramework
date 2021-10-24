@@ -1,0 +1,28 @@
+<suite>
+<test>
+	<groups>
+		<define name="all">
+			<include name="Smoke"/>
+			<include name="Sanity"/>
+		</define>
+		<run>
+			<include name="all"/>
+		</run>
+	</groups>
+	<groups>
+		<run>
+			<include name="smoke"/>
+			<include name="santiy"/>
+			<exclude name= "regression"/>
+		</run>
+	</groups>
+	<classes>
+		<class name="com.test.testCases"/>
+		<class name= "com.test.Regression">
+			<methods>
+				
+			</methods>
+		</class>
+	</classes>
+</test>
+</suite>
